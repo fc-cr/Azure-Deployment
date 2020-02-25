@@ -1,0 +1,643 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "francecentral"
+        },
+        "networkInterfaceName": {
+            "type": "string",
+            "defaultValue": "-NI"
+        },
+        "networkSecurityGroupName": {
+            "type": "string",
+            "defaultValue": "-NSG"
+        },
+        "networkSecurityGroupRules": {
+            "type": "array",
+            "defaultValue": [
+                {
+                    "name": "SSH",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "22"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "default"
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "-vnet"
+        },
+        "addressPrefixes": {
+            "type": "array",
+            "defaultValue": [
+                "10.0.0.0/24"
+            ]
+        },
+        "subnets": {
+            "type": "array",
+            "defaultValue": [
+                {
+                    "name": "default",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "type": "string",
+            "defaultValue": "-ip"
+        },
+        "publicIpAddressType": {
+            "type": "string",
+            "defaultValue": "Dynamic"
+        },
+        "publicIpAddressSku": {
+            "type": "string",
+            "defaultValue": "Basic"
+        },
+        "virtualMachineName": {
+            "type": "string",
+            "defaultValue": "-lin"
+        },
+        "virtualMachineRG": {
+            "type": "string",
+            "defaultValue": "-RG"
+        },
+        "osDiskType": {
+            "type": "string",
+            "defaultValue": "Premium_LRS"
+        },
+        "dataDisks": {
+            "type": "array",
+            "defaultValue": [
+                {
+                    "lun": 0,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Data_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 1,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Data_DataDisk_002",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 2,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Data_DataDisk_003",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 3,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Data_DataDisk_004",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 4,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Data_DataDisk_005",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 5,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Log_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 6,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Log_DataDisk_002",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 7,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_SHR_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 8,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Root_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 9,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Usr_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 10,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Backup_DataDisk_001",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                },
+                {
+                    "lun": 11,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "ene-poc-lin1_Backup_DataDisk_002",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": {
+                        "id": null
+                    }
+                }
+            ]
+        },
+        "dataDiskResources": {
+            "type": "array",
+            "defaultValue": [
+                {
+                    "name": "ene-poc-lin1_Data_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Data_DataDisk_002",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Data_DataDisk_003",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Data_DataDisk_004",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Data_DataDisk_005",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Log_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 512,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Log_DataDisk_002",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 512,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_SHR_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Root_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 128,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Usr_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 64,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Backup_DataDisk_001",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 2048,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "ene-poc-lin1_Backup_DataDisk_002",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 2048,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                }
+            ]
+        },
+        "virtualMachineSize": {
+            "type": "string",
+            "allowedValues": [ "Standard_M128-64ms", "Standard_M128", "Standard_M128-32ms" ],
+            "defaultValue": "Standard_M128-64ms"
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "codilog"
+        },
+        "adminPassword": {
+            "type": "secureString",
+            "defaultValue": null
+        },
+        "diagnosticsStorageAccountName": {
+            "type": "string",
+            "defaultValue": "-diag"
+        },
+        "diagnosticsStorageAccountId": {
+            "type": "string",
+            "defaultValue": "Microsoft.Storage/storageAccounts/-diag"
+        },
+        "diagnosticsStorageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS"
+        },
+        "diagnosticsStorageAccountKind": {
+            "type": "string",
+            "defaultValue": "Storage"
+        },
+        "availabilitySetName": {
+            "type": "string",
+            "defaultValue": "-AvailSet"
+        },
+        "availabilitySetPlatformFaultDomainCount": {
+            "type": "int",
+            "defaultValue": "2"
+        },
+        "availabilitySetPlatformUpdateDomainCount": {
+            "type": "int",
+            "defaultValue": "5"
+        }
+    },
+    "variables": {
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
+        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('networkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2019-07-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId')]"
+                }
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": "[parameters('networkSecurityGroupRules')]"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2019-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('addressPrefixes')]"
+                },
+                "subnets": "[parameters('subnets')]"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('publicIpAddressName')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            },
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('dataDiskResources')[copyIndex()].name]",
+            "type": "Microsoft.Compute/disks",
+            "apiVersion": "2019-07-01",
+            "location": "[parameters('location')]",
+            "properties": "[parameters('dataDiskResources')[copyIndex()].properties]",
+            "sku": {
+                "name": "[parameters('dataDiskResources')[copyIndex()].sku]"
+            },
+            "copy": {
+                "name": "managedDiskResources",
+                "count": "[length(parameters('dataDiskResources'))]"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('virtualMachineName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "managedDiskResources",
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]",
+                "[concat('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('osDiskType')]"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "SUSE",
+                        "offer": "SLES-SAP",
+                        "sku": "12-SP3",
+                        "version": "latest"
+                    },
+                    "copy": [
+                        {
+                            "name": "dataDisks",
+                            "count": "[length(parameters('dataDisks'))]",
+                            "input": {
+                                "lun": "[parameters('dataDisks')[copyIndex('dataDisks')].lun]",
+                                "createOption": "[parameters('dataDisks')[copyIndex('dataDisks')].createOption]",
+                                "caching": "[parameters('dataDisks')[copyIndex('dataDisks')].caching]",
+                                "writeAcceleratorEnabled": "[parameters('dataDisks')[copyIndex('dataDisks')].writeAcceleratorEnabled]",
+                                "diskSizeGB": "[parameters('dataDisks')[copyIndex('dataDisks')].diskSizeGB]",
+                                "managedDisk": {
+                                    "id": "[coalesce(parameters('dataDisks')[copyIndex('dataDisks')].id, if(equals(parameters('dataDisks')[copyIndex('dataDisks')].name, json('null')), json('null'), resourceId('Microsoft.Compute/disks', parameters('dataDisks')[copyIndex('dataDisks')].name)))]",
+                                    "storageAccountType": "[parameters('dataDisks')[copyIndex('dataDisks')].storageAccountType]"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachineName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
+                    }
+                },
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
+                }
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('diagnosticsStorageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "properties": {},
+            "kind": "[parameters('diagnosticsStorageAccountKind')]",
+            "sku": {
+                "name": "[parameters('diagnosticsStorageAccountType')]"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        },
+        {
+            "name": "[parameters('availabilitySetName')]",
+            "type": "Microsoft.Compute/availabilitySets",
+            "apiVersion": "2019-07-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "platformFaultDomainCount": "[parameters('availabilitySetPlatformFaultDomainCount')]",
+                "platformUpdateDomainCount": "[parameters('availabilitySetPlatformUpdateDomainCount')]"
+            },
+            "sku": {
+                "name": "Aligned"
+            },
+            "tags": {
+                "Company": "Enedis",
+                "environment": "POC",
+                "System": "ene-poc-lin1",
+                "Temporaire": "oui"
+            }
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
+}
